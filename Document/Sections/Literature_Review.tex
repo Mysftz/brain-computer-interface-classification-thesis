@@ -1,0 +1,83 @@
+\section{Clinical Trial}
+\label{Clinical Trial Section}
+
+The dataset used in this project is sourced from a clinical trial (\cite{ClinicalTrialPaper}; \cite{ClinicalTrialTechnicalPaper}). The 15 high-functioning subjects that a positive for having Autism Spectrum Disorder took part in 7 sessions each where they used a VR headset and shown a series of VR simulations, the subjects were asked to identify objects in their field of view within the VR simulation these would either provoke a P300 response in the subject or not. The use of electroencephalography (EEG) assisted in gather the data of the subjects brain activity and recorded the brains neural response. The data collected forms the dataset explored in \cref{Project Dataset Section}.
+
+\section{Project Dataset}
+\label{Project Dataset Section}
+
+This project used a dataset that was formed to add to a lack of P300 datasets for Brain-Computer Interfaces (BCI) (\cite{DatasetPaper}), downloaded from Kaggle (\cite{Kaggle}) which supplied the dataset for the  2019 IFMBE scientific challenge organized during MEDICON 2019. The dataset consists of a variety of data of 7 sessions for each of the 15 subjects, 105 sessions in total collected from a clinical trial (\cite{ClinicalTrialPaper}; \cite{ClinicalTrialTechnicalPaper}). The contents are outlined below with XX (01 to 15) and 0X (1 to 7) being appropriate values for the subjects (SBJ) and the sessions (S):
+
+\begin{center}
+\begin{verbatim}
+    /Dataset
+        /SBJXX
+            /S0X
+                /Train
+                    trainTargets.txt    trainLabels.txt
+                    trainEvents.txt     trainData.mat
+                /Test
+                    testTargets.txt     testLabels.txt
+                    testEvents.txt      testData.mat
+                    runs_per_block.txt
+\end{verbatim}
+\end{center}
+
+The data files are sorted into train and test folders, the files are: \textbf{trainData.mat} is a MATLAB file containing the calibration phase data, 'structured as [channels x epoch x event], epoch corresponding to the data samples from -200 ms to 1000 ms relative to the event stimulus onset (epoch length of 1200 ms; 300 data samples)' (\cite{DatasetPaper}). \textbf{testData.mat} is again a MATLAB file with the data from the online phase, identically structured to that of the trainData.mat file. \textbf{trainTargets.txt} and \textbf{testTargets.txt} are a value of 0 or 1 per line of the file, indicating if the flashed object was the target or not. \textbf{trainLabels.txt} and \textbf{testLabels.txt} contains values 1 to 8 of the target object, per line for each block. \textbf{trainEvents.txt} and \textbf{testEvents.txt} contains the the order of flashed objects per line values 1 to 8. \textbf{runs\_per\_block.txt} is only held in the test folder as it contains the value (3 to 10) of the number of runs per block used during the online phase (\cite{DatasetPaper}; \cite{Kaggle}).
+
+
+\section{CNN Research}
+\label{CNN Research SubSection}
+
+A convolutional neural network (CNN or ConvNet) is a type of network architecture more suited for deep learning, an off cut of a cognitive neural network. CNN's identify patterns within the data and train, test and learn which produce accurate results. The key element of the CNN is the layer, it can hold a numerous amount to which are individually added to the data/ image and extracts information. CNN's learn the weights and biases automatically and continuously updates them through training and are the same for all the hidden layers (\cite{UnderstandCNN};(\cite{whatiscnn}). 
+
+\subsection{Convolutional Layers}
+
+The height and weight of an image or the dimensions of data determine the size of the filter of the first convolutional layer. Every layer filters the image/ data which activates/ extracts features of the image/ data, the filter size and number of filters can be adjusted. The more convolutional layers in the CNN and the more number of filters but depends on the amount and noise of the data, the more information can be extracted from the image/ data, more so if the filter size changes. 
+
+\subsection{Padding and Stride}
+
+When the filters move through the image/ data, some information can be lost near the edges of the images or on the ends of the matrix/ array of data due to the information not being properly seen by the filter when moving. Padding cover the borders of the filters to allow the full filter size to extract all the information by applying zeroes to the surround filter size but the output size of the layer will be greater than that of the input size due to the padding. Stride determines how much the filter moves in the image or data with every filter applied, The lower the number the greater the coverage and extracting of information, but limits the movement of the filter.
+
+\subsection{Batch Normalization Layers}
+
+Batch normalization layers normalises a mini-batch of data across all the the layer, this helps speed up the CNN as a portion of the image/ data is being manipulated without great loss to the whole image/ data or layer.
+
+\subsection{ReLU Layers}
+
+A Rectified linear unit (ReLU) layer scans every element of the data and ensure no negative values are in the data, all values less than zero are set to zero, this maintains positive values and allows the CNN to operate faster and more effectively.
+
+
+\subsection{Pooling and dropout Layers}
+
+Max or average pooling layers work in by using downsampling to form multiple regions of the input in which the max or average value is computer per region. Dropout layers are assigned a probability to set values of the input data to zero to prevent over-fitting.
+
+\subsection{Fully Connected Layers}
+
+A fully connected layer multiplies a weight to the given input data and adds the bias (weights and biases calculated automatically) to fill an stated output size.
+
+\subsection{Softmax and Classification Layers}
+
+A softmax layer applies a softmax layer to the input or to the data passed onto it then passes it onto the classification layer which shifts the CNN information into classification, ready to be trained. This layer is always last as it signals the end of the CNN.
+
+\section{Related Work}
+\label{Related Work Section}
+
+The related work section is a condensed summary of \cite{PalaniPaper}, which what this project is based off of. At the original time of this study, it was done as part of the 2019 IFMBE scientific challenge organized during MEDICON 2019, where individuals or teams used the dataset to achieve the best accuracy. However within the challenge the dataset was released in two phases, all of the training data for each of the 7 sessions of all 15 subjects were made available but within the first phase, only the testing data for sessions 1 to 3 for all 15 subjects were made available, sessions 4 to 7 were released in phase 2. Their objective was to predict a target for each of the 50 blocks in each session given in phase 1, with regards to a varying number of runs in the block. \\
+
+\cite{PalaniPaper} used 3 different classifiers to achieve a high accuracy: Bayes Linear Discriminant Analysis (BLDA), Convolutional Neural Network (CNN) and Random Under Sampling boosting (RUS), however the data was adjusted before entering the classifier. A sequence of pre-processing of the data involving 4 steps: pre-stimulus mean removal, band-pass filtering, downsampling and normalisation, to remove redundant information and 'extract temporal attributes of the data' (\cite{PalaniPaper}).
+The use of pre-stimulus mean removal is to construct new vector values, each epoch starts -0.2s before the event trigger and ends 1.2s after, totalling to 1.4s of each epoch. A mean value was calculated pre-stimulus and removed from the remaining total value to which formed the new vector values were formed with respect to the post stimulus values. \\
+
+The data underwent band-pass filtering before being formed into a dataset, however this only filtered between 2Hz to 30Hz whereas \cite{PalaniPaper} used a MATLAB function called \emph{buttord} (\cite{buttord}) which returns the lowest order of data within a set of variables. The use of this function was to find the suitable order of the filter within 'pass-band frequencies 2 and 12Hz, stop-band frequencies 0.5 and 30Hz, stop-band attenuation of 40dB, pass-band ripple of 3dB' (\cite{PalaniPaper}). After a suitable order was found, it underwent band-pass filtering using the MATLAB function \emph{butter} (\cite{butter}) which return the transfer function coefficients of the Butterworth filter. \\
+
+Downsampling requires the filtered data from band-pass filtering as the values of filtered data lowered by a factor of 10 to eliminate any remaining high frequencies that still existed, another benefit was to reduce the vectors dimensions. The last step of the pre-processing is normalisation of the data, which consists of 8 events per run (\cref{Project Dataset Section}), these were normalised epoch-wise to a range of [-1,1]. \\
+
+The Bayes Linear Discriminant Analysis (BLDA) classifier obtained the highest test accuracy amongst all 3 classifiers for sessions 4 to 7, 73\%. The MATLAB code and the main research paper for this classifier were taken from \cite{Hoffmann}. BLDA is an expansion of Fisher's Linear Discriminant Analysis (FLDA), in which Linear Discriminant Analysis (LDA) 'aims to maximise the between-class over the within-class variance' (\cite{PalaniPaper}). FLDA works by identifying discriminant vectors that have a large distance between the projected target and non-target means which holds a small variance. BLDA is regressive and used in large and noisy data to check over-fitting, it assumes a linear correlation between labels and vectors by a set of adjusted weights combined with white Gaussian noise. \\
+
+For the Random Under Sampling boosting (RUS) classifier, it achieved for sessions 4 to 7, the lowest test accuracy of 63\%, however taking the best accuracy of of each subject (the best session) and forming an average test accuracy of 76\%. \cite{PalaniPaper} used the MATLAB Classification App \emph{RUSBoosted Trees} with the following parameters: 20 maximum number of splits, 450 number of weak learners (decision trees) and a 0.8 learning rate. P300 BCI data is renowned for being noisy data with class imbalances and the stimuli that provoke a P300 event appear less than other stimuli leading to skewed data, \cite{PalaniPaper} following a RUS approach in \cite{RUS} to overcome the skewed data. \\
+
+The Convolutional Neural Network (CNN) achieved the second highest test accuracy for session 4 to 7 of 67\% and 76\% by taking the best accuracy of of each subject (the best session) and forming an average test accuracy. The CNN underwent the pre-processing steps except for band-pass filtering and downsampling as the CNN can automatically filter through the noisy data and learn the discriminatory features (\cite{PalaniPaper}; \cite{8EEGCNN}). For the CNN layers in the input layer size was kept at 300 x 8 and the total number of layers was kept small to avoid over-fitting as the classifier was subject dependent. \\
+
+As CNN's have many features and variables that can be changed, some preliminary tests were done and the following CNN variables were decided from the data in phase 1: 3 convolution 2D layers holding a 3 x 3 filter size and 64, 32, 16 number of filters with same padding. Each of the 3 convolution 2D layers had a batch normalisation layer, rectified linear unit (ReLU) layer, a dropout layer with dropout percentages of 0.3, 0.2, 0.1 respectively and a max pooling layer with a pool size and stride value of 2. To conclude the layers, 2 fully connected layers were added with an output size of 128 and 2 respectively. A relu layer was added to the first fully connected layer and a softmax layer added to the second alongside a classification layer to end the layers. The training options for the CNN were not included in \cite{PalaniPaper} but uses the sgdm optimizer (MATLAB solver), 0.01 initial learning rate, 50 max epochs and every epoch was shuffled. \\
+ 
+All 3 classifiers were written in MATLAB 2019a and the BLDA and CNN classifier outputs were regressive. The test accuracy for all the classifiers was deemed by the sum of the amount of respective number of runs and the output object. This sum was divided over the number of blocks (varies depends of test data, 20 blocks for training).

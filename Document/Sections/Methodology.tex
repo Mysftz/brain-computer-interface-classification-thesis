@@ -1,0 +1,48 @@
+\section{Approachable Methods}
+\label{Approachable Methods Section}
+
+CNN's can be adjusted to find the most optimal settings for each individual dataset 'It is usually time-consuming and also requiring a lot of experimentation to decide on the suitable features' (\cite{PalaniPaper}). Variations of the CNN layers are to be tested through changing the values of the number of filters, filter size, padding, dropout probabilities, pool size (\cite{layers}). More variations can be run through changing the types of supplementary layers and their positioning, number of convolutional 2D layers. Further key variations of the CNN can be tested with the training options for the CNN: initial learning rate, max epochs, shuffle type, momentum, batch size and decay rate (\cite{options}). \\
+
+The approach is to test a variety of CNN variations to observe the behaviour of test accuracy, each variation run at least 3 times to provide an average test accuracy to form validity of effect of the variation of the test accuracy. Each batch of tests will be slightly altered to form a new variation and this method will be repeated. Using the research in \cref{CNN Research SubSection}, adjusting the dropout probabilities, number of convolution 2D layers, number of filters in the layers alongside with the max epochs, initial learning rate and optimizer (MATLAB solver) in the training options are to be tested as they hold the greatest effect on the CNN.
+
+\section{CNN Preparation}
+\label{CNN Preparation Section}
+
+Commenting further on from the work done by \cite{PalaniPaper} in \cref{Related Work Section}, the files used for the CNN classifier were sourced, this forms that base foundation of the CNN that aligns with the project objectives (\cref{Project Objectives Section}). The MATLAB code was changed from from MATLAB 2019a to 2022a, the testing code and the CNN function was altered. The command \emph{xlswrite} was not supported by MATLAB 2022a and was changed to \emph{writematrix}, variables were changed and terminal messages implemented using the \emph{disp} command to show a visual update of the CNN. The cell range variable was made and matrix range variable updated to write the predicated object, accuracy and run time results to a spreadsheet file. 
+
+The CNN training options were extended and updated in the CNN Function file (\cite{options}) to prepare for editing of the variations. New Subject and Session .txt files made (\cref{The CNN Testing File Section}) that contain data for subject and session, and cell range and matrix ranges for the accuracy, run time and predicated object to be written too. 
+
+\section{The CNN Testing File}
+\label{The CNN Testing File Section}
+
+The CNN testing file is the main MATLAB file, based off of Dr. Ramaswamy's work (\cite{PalaniPaper}) that sources data for each subject and session then calls and inputs the data into the CNN function (appendix D). The testing file as shown in (appendix A; B; C) starts on line 1 by clearing any saved variables in the MATLAB workspace and command terminal, to which then displays a "Starting CNN Test" prompt in the command windows to show that the script is running. The relevant subject and session .txt file is opened for reading by the script, then begins the loop for for a number of iterations that relates to the total number of sessions to be run; 105, 45 and 60, all subjects and sessions 1 to 7, 1 to 3 and 4 to 7 respectively. \\ 
+
+The start of the loop requests the data values on the line in the .txt file with respect to the subject and session order, on each line the subject values is denoted in the first 5 characters, session values between character 7 to 9. To print to an spreadsheet the cell range to prints the accuracy and run time to specific cells assigned in characters 11 to 13 (this prints one row and the respective number of columns) and the matrix range for the values of the predicated object of the CNN from characters 15 the the end of the line (prints in matrix form of the respective number of rows against 50 columns). The total run time for each iteration (session) was also measured on lines 4 and 19 so to further evaluate the efficiency of the CNN variations. \\
+
+Between lines 11 and 16 of the testing file (appendix A) are the variables that are source values from the dataset, loading the train and test data files then the target, label, event and runs variables. The latter 4 variables can be changed between training and testing if required, then the CNN function is called and the values placed in on line 18. The results of the predicated object (line 21), test accuracy (line 22) and run time (line 23) are written into the spreadsheet with every iteration alongside the command terminal which prompts the results (line 24), indicating a successful run of the loop and the start of the next. The files ends by prompting the end of the test and closing the subject and session .txt file. 
+
+\section{The CNN Function}
+\label{The CNN Function Section}
+
+The CNN Function partners with the CNN testing file (\cref{The CNN Testing File Section}), it contains the Convolutional Neural Network (CNN) which is an near identical version that was used in Dr. Ramaswamy's work (\cite{PalaniPaper}) that trains and tests the data which is retrieved through the CNN testing file. The function retrieves the variables with their assigned values and implements them throughout the function, which begins with the pre-processing of the data with the pre-stimulus mean removal and normalisation. These pre-processing steps as explained in \cref{Related Work Section} seeks to use only the data with temporal attributes, to deepen the divide between the training data, this is shown in appendix D in lines 5 to 14. The pre-processing steps of downsampling wasn't used for the CNN (\cite{PalaniPaper}), therefore the band-pass filtering isn't used either as downsampling requires the use of the filtered data. \\
+
+The CNN is designed around a standard CNN structure explained in \cref{CNN Research SubSection}. The CNN begins with 3 convolution 2D layers and hidden layers as seen in lines 19 to 48 and training options in lines 50 to 59 as described in (\cref{Related Work Section}; \cref{CNN Research SubSection}). The CNN is then trained in line 62, which saves all the training results for later use. AS the number of blocks are different between the train and test data, pre-processing steps are undertaken again for the testing data in lines 64 to 75. The test data is then sorted alongside the training results and placed into an array with the event data in lines 78 and 80. The predicated object is then calculated in lines 83 to 90 for each block with its partnered total test accuracy in lines 92 to 99 (\cref{Related Work Section}). \\
+
+\section{Dataset Modification}
+\label{Dataset Modification Section}
+
+To improve the efficiency and run time of the CNN the dataset was modified to suit MATLAB instead of Python. This was done by removing a section in the path of the data files, the path as explained in \cref{Project Dataset Section} held the training and testing data in two separate train and test folders with respect to each subjects and each individual sessions whereas the train and test folders were removed and the data files were stored in its respected session folder. The reason is to avoid a second loop inside the main subject/ session loop in the CNN testing files, also to avoid putting extra data and an extra column in the SBJ-S format .txt files. If this added data was added with the additional loop then the outer loop would call each subject, session, cell range and the additional inner loop would call train or test depending on the file in the dataset assigned to the variable. The new path is displayed below with X denoting subject 1 to 15 and session 1 to 7.
+
+
+\begin{center}
+    \begin{verbatim}
+    /Dataset
+        /SBJXX
+            /S0X
+                trainTargets.txt    trainLabels.txt
+                trainEvents.txt     trainData.mat
+                testTargets.txt     testLabels.txt
+                testEvents.txt      testData.mat
+                runs_per_block.txt
+    \end{verbatim}
+\end{center}
